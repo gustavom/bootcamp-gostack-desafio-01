@@ -22,26 +22,25 @@ function checkIdExist(req, res, next) {
       return elm.id;
     })
     .includes(informedId);
-  // .join("")
-  // .trim();
-  console.log(informedId);
-  console.log(checkId);
-  // console.log(checkId.includes(+informedId));
-  console.log(`checkId: ${checkId}`);
-  console.log(typeof checkId);
   if (!checkId) {
     return res.status(400).send({ error: "Id does not exists" });
   }
   next();
 }
 
+// -- conta as requisições
+function countReqs(req, res, next) {
+  console.count();
+  next();
+}
+
 // rota de listagem de projetos
-server.get("/projects", (req, res) => {
+server.get("/projects", countReqs, (req, res) => {
   res.json(projects);
 });
 
 // rota de criação de projetos
-server.post("/projects", (req, res) => {
+server.post("/projects", countReqs, (req, res) => {
   const tasks = [];
   const { id, title } = req.body;
 
@@ -51,7 +50,7 @@ server.post("/projects", (req, res) => {
 });
 
 // rota de atualização do title de projetos
-server.put("/projects/:id", checkIdExist, (req, res) => {
+server.put("/projects/:id", checkIdExist, countReqs, (req, res) => {
   const passedId = req.params.id;
   const { title } = req.body;
 
@@ -69,7 +68,7 @@ server.put("/projects/:id", checkIdExist, (req, res) => {
   return res.json(projects);
 });
 // rota de criação das tasks de projetos
-server.post("/projects/:id/tasks", checkIdExist, (req, res) => {
+server.post("/projects/:id/tasks", checkIdExist, countReqs, (req, res) => {
   const passedId = req.params.id;
   const { title } = req.body;
 
@@ -88,7 +87,7 @@ server.post("/projects/:id/tasks", checkIdExist, (req, res) => {
 });
 
 // rota de remoção de projetos
-server.delete("/projects/:id", checkIdExist, (req, res) => {
+server.delete("/projects/:id", checkIdExist, countReqs, (req, res) => {
   const passedId = req.params.id;
   const { title } = req.body;
 
