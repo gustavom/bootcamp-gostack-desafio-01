@@ -34,13 +34,15 @@ function countReqs(req, res, next) {
   next();
 }
 
+server.use(countReqs);
+
 // rota de listagem de projetos
-server.get("/projects", countReqs, (req, res) => {
+server.get("/projects", (req, res) => {
   res.json(projects);
 });
 
 // rota de criação de projetos
-server.post("/projects", countReqs, (req, res) => {
+server.post("/projects", (req, res) => {
   const tasks = [];
   const { id, title } = req.body;
 
@@ -50,7 +52,7 @@ server.post("/projects", countReqs, (req, res) => {
 });
 
 // rota de atualização do title de projetos
-server.put("/projects/:id", checkIdExist, countReqs, (req, res) => {
+server.put("/projects/:id", checkIdExist, (req, res) => {
   const passedId = req.params.id;
   const { title } = req.body;
 
@@ -68,7 +70,7 @@ server.put("/projects/:id", checkIdExist, countReqs, (req, res) => {
   return res.json(projects);
 });
 // rota de criação das tasks de projetos
-server.post("/projects/:id/tasks", checkIdExist, countReqs, (req, res) => {
+server.post("/projects/:id/tasks", checkIdExist, (req, res) => {
   const passedId = req.params.id;
   const { title } = req.body;
 
@@ -87,7 +89,7 @@ server.post("/projects/:id/tasks", checkIdExist, countReqs, (req, res) => {
 });
 
 // rota de remoção de projetos
-server.delete("/projects/:id", checkIdExist, countReqs, (req, res) => {
+server.delete("/projects/:id", checkIdExist, (req, res) => {
   const passedId = req.params.id;
   const { title } = req.body;
 
