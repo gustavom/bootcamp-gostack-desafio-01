@@ -40,5 +40,22 @@ server.put("/projects/:id", (req, res) => {
 
   return res.json(projects);
 });
+server.delete("/projects/:id", (req, res) => {
+  const passedId = req.params.id;
+  const { title } = req.body;
+
+  const getIndex = projects
+    .map((elm, index) => {
+      if (projects[index].id == passedId) {
+        return index;
+      }
+      return "";
+    })
+    .join("");
+
+  projects.splice(getIndex, 1);
+
+  return res.json(projects);
+});
 
 server.listen(3000);
