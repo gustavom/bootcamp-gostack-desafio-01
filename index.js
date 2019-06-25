@@ -7,10 +7,33 @@ server.use(express.json());
 
 // nossa base de dados
 const projects = [
-  { id: 1, title: "Projeto 01", tasks: [] },
-  { id: 12, title: "Projeto 12", tasks: [] },
-  { id: 3, title: "Projeto 03", tasks: [] }
+  { id: "1", title: "Projeto 01", tasks: [] },
+  { id: "12", title: "Projeto 12", tasks: [] },
+  { id: "3", title: "Projeto 03", tasks: [] }
 ];
+
+// middlewares
+// -- verifica se id existe
+function checkIdExist(req, res, next) {
+  const informedId = req.params.id;
+  const checkId = projects
+    .map((elm, index) => {
+      let idValue = elm.id;
+      return elm.id;
+    })
+    .includes(informedId);
+  // .join("")
+  // .trim();
+  console.log(informedId);
+  console.log(checkId);
+  // console.log(checkId.includes(+informedId));
+  console.log(`checkId: ${checkId}`);
+  console.log(typeof checkId);
+  if (!checkId) {
+    return res.status(400).send({ error: "Id does not exists" });
+  }
+  next();
+}
 
 // rota de listagem de projetos
 server.get("/projects", (req, res) => {
@@ -28,7 +51,7 @@ server.post("/projects", (req, res) => {
 });
 
 // rota de atualização do title de projetos
-server.put("/projects/:id", (req, res) => {
+server.put("/projects/:id", checkIdExist, (req, res) => {
   const passedId = req.params.id;
   const { title } = req.body;
 
@@ -46,7 +69,7 @@ server.put("/projects/:id", (req, res) => {
   return res.json(projects);
 });
 // rota de criação das tasks de projetos
-server.post("/projects/:id/tasks", (req, res) => {
+server.post("/projects/:id/tasks", checkIdExist, (req, res) => {
   const passedId = req.params.id;
   const { title } = req.body;
 
@@ -65,7 +88,7 @@ server.post("/projects/:id/tasks", (req, res) => {
 });
 
 // rota de remoção de projetos
-server.delete("/projects/:id", (req, res) => {
+server.delete("/projects/:id", checkIdExist, (req, res) => {
   const passedId = req.params.id;
   const { title } = req.body;
 
