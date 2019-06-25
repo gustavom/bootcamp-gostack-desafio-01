@@ -26,21 +26,15 @@ server.post("/projects", (req, res) => {
 server.put("/projects/:id", (req, res) => {
   const passedId = req.params.id;
   const { title } = req.body;
-  // console.log(passedId);
-  // console.log(title);
-  // console.log(projects[0].id);
+
   const getIndex = projects
     .map((elm, index) => {
       if (projects[index].id == passedId) {
         return index;
       }
       return "";
-      //return res.status(400).send({ error: "Id não encontrado" });
     })
     .join("");
-  console.log(getIndex);
-
-  console.log(projects[getIndex]);
 
   projects[getIndex].title = title;
 
