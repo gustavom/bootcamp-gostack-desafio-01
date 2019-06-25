@@ -106,4 +106,8 @@ server.delete("/projects/:id", checkIdExist, countReqs, (req, res) => {
 });
 
 // servidor deve rodar na porta 3000
-server.listen(3000);
+server.listen(3000, () => {
+  console.log(
+    "*********\n\nServer running in: \n\nhttp://localhost:3000 \n\n*********"
+  );
+});
